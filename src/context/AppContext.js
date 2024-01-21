@@ -9,19 +9,27 @@ export default function AppContextProvider({ children }) {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(null);
 
-  let fetchBlogPost = async (page = 1) => {
+  let fetchBlogPost = async (page = 1, tag = null, category) => {
     setLoading(true);
     let url = `${baseUrl}?page=${page}`;
-    console.log(url);
+    if (tag) {
+      url += `&tag=${tag}`;
+    }
+    if (category) {
+      url += `&category=${category}`;
+    }
     try {
-      const result = await fetch(url);
-      const data = await result.json();
-      console.log(data);
+      const res = await fetch(url);
+      const data = await res.json();
+      if (!data.posts || data.posts.length === 0) {
+        throw new Error("Something Went wrong");
+      }
+      console.log("Api Response", data);
       setPage(data.page);
       setPosts(data.posts);
       setTotalPages(data.totalPages);
     } catch (error) {
-      console.log(error);
+      console.log("error in fetching blogposts", error);
       setPage(1);
       setPosts([]);
       setTotalPages(null);
@@ -35,10 +43,10 @@ export default function AppContextProvider({ children }) {
   };
 
   const value = {
-    loading,
-    setLoading,
     posts,
     setPosts,
+    loading,
+    setLoading,
     page,
     setPage,
     totalPages,
