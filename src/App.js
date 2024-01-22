@@ -6,6 +6,10 @@ import { useLocation, useNavigation } from "react-router-dom";
 import { useEffect, useContext } from "react";
 import { AppContext } from "./context/AppContext";
 import { Route, Routes, useSearchParams } from "react-router-dom";
+import Home from "./components/Home";
+import BlogPage from "./components/BlogPage";
+import TagPage from "./components/TagPage";
+import CategoryPage from "./components/CategoryPage";
 
 function App() {
   const { fetchBlogPost } = useContext(AppContext);

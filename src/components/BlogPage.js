@@ -1,6 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigation } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
+import BlogDetails from "./BlogDetails";
+import { useLocation } from "react-router-dom";
+import { baseUrl } from "../baseUrl";
+import Header from "./Header";
 
 export default function BlogPage() {
   const { loading, setLoading } = useContext(AppContext);
@@ -23,5 +27,43 @@ export default function BlogPage() {
       setRelatedBlogs([]);
     }
   };
-  return <div>BlogPage</div>;
+
+  useEffect(() => {
+    if (blogId) {
+      fetchRelatedBlogs();
+    }
+  }, [location.pathname]);
+  return (
+    <div>
+      <Header />
+      <div>
+        <button
+          onClick={() => {
+            navigation(-1);
+          }}
+        >
+          Back
+        </button>
+        {loading ? (
+          <div>
+            <p>Loading...</p>
+          </div>
+        ) : blog ? (
+          <div>
+            <BlogDetails post={blog} />
+            <h2>Related Blogs</h2>
+            {relatedblogs.map((post) => {
+              <div key={post.id}>
+                <BlogDetails post={post} />
+              </div>;
+            })}
+          </div>
+        ) : (
+          <div>
+            <p>No Blog Found</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }

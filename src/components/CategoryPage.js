@@ -1,6 +1,8 @@
 import React from "react";
 import { useLocation, useNavigation } from "react-router-dom";
 import Pagination from "./Pagination";
+import Header from "./Header";
+import Blogs from "./Blogs";
 export default function CategoryPage() {
   const navigation = useNavigation();
   const location = useLocation();
